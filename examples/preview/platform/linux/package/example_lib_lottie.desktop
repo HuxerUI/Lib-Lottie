@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Lib-Lottie Preview
+Exec=example_lib_lottie
+Icon=example_lib_lottie
+Categories=Utility;
+Terminal=false
