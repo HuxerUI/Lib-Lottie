@@ -58,7 +58,7 @@ target_include_directories(huxerui_lottie PUBLIC
         "$<INSTALL_INTERFACE:include>"
 )
 
-add_subdirectory(cmake/thorvg)
+add_subdirectory(cmake/thorvg "${CMAKE_BINARY_DIR}/lottie-thorvg")
 target_include_directories(huxerui_lottie PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_link_libraries(huxerui_lottie PRIVATE lottie_thorvg)
 if (APPLE)

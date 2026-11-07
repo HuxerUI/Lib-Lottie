@@ -46,6 +46,10 @@ huxerui_add_app(example_lib_lottie
 
 huxerui_configure_project_app(example_lib_lottie)
 
+if (MSVC AND NOT HUXERUI_LIBRARY_GRAPH_ONLY)
+    target_compile_options(example_lib_lottie PRIVATE /utf-8)
+endif ()
+
 huxerui_use_library(example_lib_lottie
         TARGET HuxerUI::Lottie
         PATH "${CMAKE_CURRENT_SOURCE_DIR}/../.."

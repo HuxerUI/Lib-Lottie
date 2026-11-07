@@ -7,11 +7,11 @@ endif ()
 include(FetchContent)
 
 # The pinned CPU/Lottie subset builds with the consuming project's compiler and toolchain.
-FetchContent_Declare(lottie_thorvg_source
+FetchContent_Declare(lottie_tvg
     URL "https://codeload.github.com/thorvg/thorvg/tar.gz/589bc4120f2097fb1b135e552c2ef39f6581612b"
     URL_HASH SHA256=2380c7f1c00ee189b0f28a78a00112c3b290305e6a321641dd527977e9ef6fa3
 )
-FetchContent_MakeAvailable(lottie_thorvg_source)
+FetchContent_MakeAvailable(lottie_tvg)
 
 set(LOTTIE_THORVG_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/thorvg-config")
 file(MAKE_DIRECTORY "${LOTTIE_THORVG_CONFIG_DIR}")
@@ -35,7 +35,7 @@ set(LOTTIE_THORVG_DIRECTORIES
 set(LOTTIE_THORVG_SOURCES)
 set(LOTTIE_THORVG_INCLUDES)
 foreach (directory IN LISTS LOTTIE_THORVG_DIRECTORIES)
-    set(directory "${lottie_thorvg_source_SOURCE_DIR}/src/${directory}")
+    set(directory "${lottie_tvg_SOURCE_DIR}/src/${directory}")
     file(GLOB sources CONFIGURE_DEPENDS "${directory}/*.cpp")
     list(APPEND LOTTIE_THORVG_SOURCES ${sources})
     list(APPEND LOTTIE_THORVG_INCLUDES "${directory}")
@@ -65,7 +65,7 @@ if (WIN32)
     target_compile_definitions(lottie_thorvg PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
 endif ()
 target_include_directories(lottie_thorvg
-    PUBLIC "${lottie_thorvg_source_SOURCE_DIR}/inc"
+    PUBLIC "${lottie_tvg_SOURCE_DIR}/inc"
     PRIVATE "${LOTTIE_THORVG_CONFIG_DIR}" ${LOTTIE_THORVG_INCLUDES}
 )
 set_target_properties(lottie_thorvg PROPERTIES
