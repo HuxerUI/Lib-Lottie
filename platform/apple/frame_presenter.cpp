@@ -12,14 +12,14 @@ namespace huxerui::lottie::detail {
 namespace {
 
 #if TARGET_OS_IPHONE
-using NativeTexture = ios::PixelBufferTexture;
+using PlatformTexture = ios::PixelBufferTexture;
 #else
-using NativeTexture = macos::PixelBufferTexture;
+using PlatformTexture = macos::PixelBufferTexture;
 #endif
 
 class ApplePresenter final : public FramePresenter {
 public:
-  explicit ApplePresenter(Size size) : texture_(std::make_shared<NativeTexture>(size)) {}
+  explicit ApplePresenter(Size size) : texture_(std::make_shared<PlatformTexture>(size)) {}
   std::shared_ptr<ExternalTexture> Texture() const override { return texture_; }
 
   void Publish(const PixelBuffer& frame) override {
@@ -54,7 +54,7 @@ public:
   void Finish() noexcept override { texture_->Finish(); }
 
 private:
-  std::shared_ptr<NativeTexture> texture_;
+  std::shared_ptr<PlatformTexture> texture_;
 };
 
 } // namespace

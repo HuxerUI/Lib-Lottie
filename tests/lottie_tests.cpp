@@ -142,7 +142,7 @@ void ComponentTest() {
   auto package = std::make_shared<Package>();
   root = [&] {
     return Column {
-      mounted.Get() ? motion::Lottie(source.Get(), control.Get())
+      mounted ? motion::Lottie(source, control)
           .On<motion::LottieEvents::Loaded>([&](const motion::LottieMetadata& metadata) {
             Require(metadata.frames == 60 && metadata.duration == 1.0, "Loaded metadata");
             ++loaded;
@@ -150,7 +150,7 @@ void ComponentTest() {
           .On<motion::LottieEvents::Completed>([&] { ++completed; })
           .On<motion::LottieEvents::Failed>([&](const motion::LottieError& failure) { errors.push_back(failure); })
           .With(Frame{.width = 200, .height = 120}).Key("player") : Text("Unmounted"),
-      Text(std::to_string(unrelated.Get())),
+      Text(std::to_string(unrelated)),
     };
   };
   Application app(App, {.application_hooks = {motion::Install, InstallHost, [&](ApplicationContext&) {
@@ -253,7 +253,7 @@ void FileSourceTest() {
   const auto ui_thread = std::this_thread::get_id();
   root = [&] {
     return Column {
-      mounted.Get() ? motion::Lottie(source.Get(), control.Get())
+      mounted ? motion::Lottie(source, control)
           .On<motion::LottieEvents::Loaded>([&](const motion::LottieMetadata& metadata) {
             Require(std::this_thread::get_id() == ui_thread, "File load event must run on UI thread");
             Require(metadata.frames == 60 && metadata.duration == 1.0, "File metadata");
@@ -264,7 +264,7 @@ void FileSourceTest() {
             errors.push_back(failure);
           })
           .With(Frame{.width = 100, .height = 100}).Key("file-player") : Text("Unmounted"),
-      Text(std::to_string(unrelated.Get())),
+      Text(std::to_string(unrelated)),
     };
   };
   Application app(App, {.application_hooks = {motion::Install, InstallHost, [&](ApplicationContext&) {
@@ -325,8 +325,8 @@ void CancellationTest() {
   int errors = 0;
   int handler_seen = -1;
   root = [&] {
-    const int current_handler = handler.Get();
-    return mounted.Get() ? motion::Lottie(source.Get(), motion::LottieProgress{0.5})
+    const int current_handler = handler;
+    return mounted ? motion::Lottie(source, motion::LottieProgress{0.5})
         .On<motion::LottieEvents::Loaded>([&, current_handler](const motion::LottieMetadata&) {
           ++loaded;
           handler_seen = current_handler;
@@ -402,9 +402,9 @@ void PresentationTest() {
   int errors = 0;
   root = [&] {
     auto theme = FlatLightThemeSpec();
-    theme.motion.reduced_motion = reduced.Get();
+    theme.motion.reduced_motion = reduced;
     return FlatTheme(theme, Row {
-      motion::Lottie(asset, control.Get())
+      motion::Lottie(asset, control)
           .On<motion::LottieEvents::Loaded>([&](const motion::LottieMetadata&) { ++loaded; })
           .On<motion::LottieEvents::Failed>([&](const motion::LottieError&) { ++errors; })
           .With(Frame{.width = 120, .height = 120}).Key("playing"),

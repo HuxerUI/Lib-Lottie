@@ -63,7 +63,7 @@ lottie::Lottie(File("/path/to/animation.json"), lottie::LottiePlayback{.iteratio
     .With(Frame{.width = 240.0F, .height = 240.0F});
 ```
 
-Payload reads and decoding use the backend's serial execution queue. Native platforms use a dedicated worker thread; Web schedules work on the browser event loop without requiring pthreads. Changing the source clears the previous animation and queues the replacement. Preserve the source's identity across recomposition to avoid unnecessary reloads.
+Payload reads and decoding use the backend's serial execution queue. Non-Web platforms use a dedicated worker thread; Web schedules work on the browser event loop without requiring pthreads. Changing the source clears the previous animation and queues the replacement. Preserve the source's identity across recomposition to avoid unnecessary reloads.
 
 File identity follows `File` equality. Recomposition with the same path does not reload its contents, and files are not watched. Changing `LottiePlayback::restart` replays the loaded animation; change the source or remount the component to reread a file. Missing or inaccessible files emit `LottieError::Stage::Resource`; empty files and invalid Lottie JSON emit `LottieError::Stage::Decode`.
 
@@ -129,7 +129,7 @@ Replace `<platform>` with `macos`, `ios`, `android`, `windows`, `linux`, or `web
 
 ## Tests
 
-The native desktop tests require the HuxerUI SDK testing component:
+The desktop tests require the HuxerUI SDK testing component:
 
 ```sh
 cmake -S . -B build/tests -G Ninja \

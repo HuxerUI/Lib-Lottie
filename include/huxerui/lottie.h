@@ -95,7 +95,7 @@ struct LottieEvents {
   struct Loaded : Event<void(const LottieMetadata&)> {};
 
   /// Emitted at most once per finite playback run after its final frame has been published to the texture.
-  /// Publication does not guarantee that the native window has presented that frame yet.
+  /// Publication does not guarantee that the platform window has presented that frame yet.
   /// Infinite playback and LottieProgress do not emit this event; ordinary pause/resume does not rearm it.
   struct Completed : Event<void()> {};
 
@@ -110,7 +110,7 @@ struct LottieEvents {
 /// Installs the application's shared ThorVG backend and manages its lifetime through application shutdown.
 /// Add this function once to Application's application_hooks before composing any Lottie views.
 /// Players share a serial execution queue but retain independent animation and playback state.
-/// Native builds use a dedicated worker thread; Web schedules work on the browser event loop without pthreads.
+/// Non-Web builds use a dedicated worker thread; Web schedules work on the browser event loop without pthreads.
 /// @param context Application installation context supplied by HuxerUI; it is not retained.
 /// @throws std::logic_error If the service has already been installed in this application.
 void Install(ApplicationContext& context);

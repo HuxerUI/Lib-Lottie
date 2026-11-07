@@ -12,14 +12,14 @@ namespace huxerui::lottie::detail {
 namespace {
 
 #if defined(_WIN32)
-namespace native = huxerui::windows;
+namespace platform = huxerui::windows;
 #else
-namespace native = huxerui::linux;
+namespace platform = huxerui::linux;
 #endif
 
 class DesktopPresenter final : public FramePresenter {
 public:
-  explicit DesktopPresenter(Size size) : texture_(std::make_shared<native::PixelTexture>(size)) {}
+  explicit DesktopPresenter(Size size) : texture_(std::make_shared<platform::PixelTexture>(size)) {}
   std::shared_ptr<ExternalTexture> Texture() const override { return texture_; }
 
   void Publish(const PixelBuffer& frame) override {
@@ -28,7 +28,7 @@ public:
         .pixel_width = static_cast<int>(frame->width),
         .pixel_height = static_cast<int>(frame->height),
         .bytes_per_row = std::size_t(frame->width) * 4,
-        .format = native::PixelFormat::Rgba8888,
+        .format = platform::PixelFormat::Rgba8888,
         .pixels = std::as_bytes(frame->Pixels()),
     });
   }
@@ -36,7 +36,7 @@ public:
   void Finish() noexcept override { texture_->Finish(); }
 
 private:
-  std::shared_ptr<native::PixelTexture> texture_;
+  std::shared_ptr<platform::PixelTexture> texture_;
 };
 
 } // namespace

@@ -10,7 +10,7 @@ class FramePresenter {
 public:
   virtual ~FramePresenter() = default;
   virtual std::shared_ptr<ExternalTexture> Texture() const = 0;
-  /// Requests the native alpha representation directly from the rasterizer to avoid pixel conversion on the UI thread.
+  /// Requests the platform's alpha representation from the rasterizer to avoid pixel conversion on the UI thread.
   virtual PixelAlpha Alpha() const noexcept { return PixelAlpha::Straight; }
   virtual void Publish(const PixelBuffer& pixels) = 0;
   virtual void Finish() noexcept = 0;
