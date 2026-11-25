@@ -1,0 +1,81 @@
+[package]
+namespace   = "huxerui"
+name        = "lottie"
+version     = "0.1.0"
+standard    = "c++23"
+description = "Lottie vector animation component for HuxerUI backed by ThorVG"
+license     = "MIT"
+repo        = "https://github.com/HuxerUI/Lib-Lottie"
+
+[package.metadata.huxerui]
+library   = "HuxerUI::Lottie"
+name      = "lottie"
+id        = "org.huxerui.lib.lottie"
+namespace = "huxerui::lottie"
+resources = "resources"
+
+[dependencies]
+huxerui.huxerui = "0.5.5"
+
+[dependencies.compat]
+thorvg = "1.1.3"
+
+[targets.huxerui_lottie]
+kind = "lib"
+
+[lib]
+path = "modules/lottie.cppm"
+
+[build]
+sources              = []
+include_dirs         = ["include", "src"]
+private_include_dirs = ["src"]
+
+[target.'cfg(all(os = "linux", not(env = "android")))'.build]
+sources = [
+    "platform/native/work_queue.cpp",
+    "platform/desktop/frame_presenter.cpp",
+]
+
+[target.'cfg(all(os = "linux", not(env = "android")))'.runtime]
+libraries = ["pthread"]
+
+[target.macos.build]
+sources = [
+    "platform/native/work_queue.cpp",
+    "platform/apple/frame_presenter.cpp",
+]
+
+[target.macos.runtime]
+frameworks = ["CoreVideo"]
+
+[target.windows.build]
+sources = [
+    "platform/native/work_queue.cpp",
+    "platform/desktop/frame_presenter.cpp",
+]
+defines = ["NOMINMAX"]
+
+[target.'cfg(env = "android")'.build]
+sources = [
+    "platform/native/work_queue.cpp",
+    "platform/android/src/main/cpp/frame_presenter.cpp",
+]
+
+[target.'cfg(env = "android")'.runtime]
+libraries = ["jnigraphics"]
+
+[target.'cfg(os = "ios")'.build]
+sources = [
+    "platform/native/work_queue.cpp",
+    "platform/apple/frame_presenter.cpp",
+]
+
+[target.'cfg(os = "ios")'.runtime]
+frameworks = ["CoreVideo"]
+
+[target.'cfg(os = "emscripten")'.build]
+sources = [
+    "platform/web/work_queue.cpp",
+    "platform/web/frame_presenter.cpp",
+]
