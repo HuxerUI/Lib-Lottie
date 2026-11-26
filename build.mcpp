@@ -1,0 +1,9 @@
+import mcpp;
+import huxerui.rules;
+
+int main() {
+    return huxerui::rules::configure({
+        .resources = "resources",
+        .resource_namespace = "huxerui_lottie",
+    }) ? 0 : 1;
+}
